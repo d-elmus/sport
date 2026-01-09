@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Suivi Sport</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto+Mono:wght@100..700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <audio id="background-music" loop>
+        <source src="audio/ma_musique_de_motiv.mp3" type="audio/mpeg">
+        Votre navigateur ne supporte pas l'élément audio.
+    </audio>
+
+    <div id="startup-overlay">
+        <button id="enter-app-button">ENTRER</button>
+    </div>
+    
+    <header id="main-header">
+        <h1>Projet: tracé avant la Malaisie</h1>
+    </header>
+
+    <div class="container split-layout">
+        
+        <div class="left-panel">
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab('etirements')">🧘 Étirements</button>
+                <button class="tab-btn" onclick="openTab('pompes')">💪 Pompes & Balais</button>
+                <button class="tab-btn" onclick="openTab('force-natation')">🏋️ Force Natation</button>
+                <button class="tab-btn" onclick="openTab('abdos')">🍫 Abdos</button>
+                <button class="tab-btn" onclick="openTab('running')">🏃 Course à Pied</button>
+            </div>
+
+            <div id="etirements" class="tab-content active">
+                <h2>Ma Routine Mobilité</h2>
+                <p class="subtitle">Cochez la case "Fait" pour valider la séance globale.</p>
+                
+                <form id="form-etirements">
+                    
+                    <div class="exercise-block">
+                        <h3>A. Chaîne postérieure (3 min)</h3>
+                        
+                        <div class="exercise-item">
+                            <label><strong>1. Ischio-jambiers (Pike stretch)</strong><br>
+                            <small>Dos droit, 30s + 10s pause + 30s. </small></label>
+                            <div class="input-row">
+                                <span>Niveau atteint :</span>
+                                <select id="ischio-level">
+                                    <option value="1">Genoux</option>
+                                    <option value="2">Haut Tibia</option>
+                                    <option value="3">Bas Tibia</option>
+                                    <option value="4">Chevilles</option>
+                                    <option value="5">Pieds (doigts)</option>
+                                    <option value="6">Pieds (pleine main)</option>
+                                    <option value="7">Poignets dépassent les pieds</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="exercise-item">
+                            <label><strong>2. Mollet contre mur</strong><br>
+                            <small>Jambe arrière tendue. 30s / côté.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-mollet" class="time-display">30</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('mollet')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('mollet')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="exercise-block">
+                        <h3>B. Hanches et Psoas (3 min)</h3>
+                        
+                        <div class="exercise-item">
+                            <label><strong>3. Fente profonde</strong><br>
+                            <small>Bassin vers le sol. Important pour le running.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-fente" class="time-display">45</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('fente')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('fente')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exercise-item">
+                            <label><strong>4. Posture du pigeon</strong><br>
+                            <small>Pour piriforme et fessier.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-pigeon" class="time-display">45</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('pigeon')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('pigeon')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-block">
+                        <h3>C. Dos et Colonne (2 min)</h3>
+                        <div class="exercise-item">
+                            <label><strong>5. Torsion du dos au sol</strong><br>
+                            <small>Bras en croix. Respiration 4s in / 6s out.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-torsion" class="time-display">60</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('torsion')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('torsion')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-block">
+                        <h3>D. Épaules et Pectoraux (2 min)</h3>
+                        <div class="exercise-item">
+                            <label><strong>6. Grand pectoral (Mur)</strong><br>
+                            <small>Bras 90°, rotation buste.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-pec" class="time-display">30</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('pec')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('pec')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-item">
+                            <label><strong>7. Deltoïdes postérieurs</strong><br>
+                            <small>Bras tendu devant, tiré par l'autre.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-delto" class="time-display">30</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('delto')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('delto')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="validation-zone">
+                        <label><input type="checkbox" required> J'ai bien réalisé tous les exercices ci-dessus</label>
+                        <button type="submit">✅ Valider la séance d'étirements</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="pompes" class="tab-content">
+                <h2>💪 Pompes & Balais</h2>
+                <p class="subtitle">Enregistrez vos pompes et balais séparément.</p>
+                
+                <div class="exercise-block">
+                    <h3>Enregistrer les Pompes</h3>
+                    <form id="form-pompes">
+                        <div class="exercise-group">
+                            <label for="nb-pompes">Nombre de **Pompes** réalisées :</label>
+                            <input type="number" id="nb-pompes" placeholder="Ex: 45" min="0" required>
+                        </div>
+                        <button type="submit">✅ Enregistrer les Pompes</button>
+                    </form>
+                </div>
+
+                <div class="exercise-block">
+                    <h3>Enregistrer les Balais</h3>
+                    <form id="form-balais">
+                        <div class="exercise-group">
+                            <label for="nb-balais">Nombre de **Balais** réalisées :</label>
+                            <input type="number" id="nb-balais" placeholder="Ex: 15" min="0" required>
+                        </div>
+                        <button type="submit">✅ Enregistrer les Balais</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="force-natation" class="tab-content">
+                <h2>🏋️ Routine Force Natation</h2>
+                <p class="subtitle">Enregistrez le nombre total de **répétitions** réalisées pour chaque exercice.</p>
+                
+                <form id="form-force-natation">
+                    <div class="exercise-block">
+                        <h3>A. Pompes (Pectoraux + Triceps + Gainage)</h3>
+                        <p><small>3–4 séries de 12–20 répétitions. → Concentrez-vous sur l’alignement et l’explosivité en remontant.</small></p>
+                        
+                        <div class="timer-control">
+                            Répétitions totales : <span id="rep-pompes-force" class="time-display">48</span> reps
+                            <div class="rep-control">
+                                <button type="button" class="btn-remove" onclick="removeRepForce('pompes-force')">-1 Rep</button>
+                                <button type="button" class="btn-add" onclick="addRepForce('pompes-force')">+1 Rep</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-block">
+                        <h3>B. Tractions Inversées (Dos + Biceps + Arrière d’épaule)</h3>
+                        <p><small>3–4 séries de 8–15 répétitions. → C’est l’exercice clé pour reproduire le mouvement de traction en nage.</small></p>
+                        
+                        <div class="timer-control">
+                            Répétitions totales : <span id="rep-tractions-force" class="time-display">32</span> reps
+                            <div class="rep-control">
+                                <button type="button" class="btn-remove" onclick="removeRepForce('tractions-force')">-1 Rep</button>
+                                <button type="button" class="btn-add" onclick="addRepForce('tractions-force')">+1 Rep</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="validation-zone">
+                        <label>Notes de séance (facultatif) :</label>
+                        <textarea id="force-notes" placeholder="Ressenti, fatigue, séries réalisées, etc."></textarea>
+                        <button type="submit">✅ Valider la séance Force Natation</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="abdos" class="tab-content">
+                <h2>Routine Abs - 6 Minutes Chrono</h2>
+                <p><a href="http://www.youtube.com/watch?v=wfxm7Sufd4Y" target="_blank">📺 Voir la vidéo de Tibo InShape (6 min)</a></p>
+                <p class="subtitle">Ajuste les temps si besoin. Les temps minimums sont 30s.</p>
+
+                <form id="form-abdos">
+                    <div class="exercise-block">
+                        <h3>Les Exercices (45s de travail / 15s de pause)</h3>
+
+                        <div class="exercise-item">
+                            <label><strong>1. Crunch Classique</strong><br>
+                            <small>Mains à la tête, décoller les épaules et le haut du dos.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-crunch_classique" class="time-display">45</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('crunch_classique')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('crunch_classique')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exercise-item">
+                            <label><strong>2. Russian Twist</strong><br>
+                            <small>En équilibre sur les fessiers, torsions du buste.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-russion_twist" class="time-display">45</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('russion_twist')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('russion_twist')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exercise-item">
+                            <label><strong>3. Sit-up Papillon</strong><br>
+                            <small>Pieds collés (grenouille), sit-up complet.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-crunch_papillon" class="time-display">45</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('crunch_papillon')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('crunch_papillon')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exercise-item">
+                            <label><strong>4. Crunch Bras Tendus</strong><br>
+                            <small>Bras droits vers le haut, décoller légèrement les épaules.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-crunch_bras" class="time-display">45</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('crunch_bras')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('crunch_bras')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="exercise-item">
+                            <label><strong>5. Ciseaux Verticaux Alternés</strong><br>
+                            <small>Mains sous les fesses, épaules relevées, une jambe après l'autre.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-ciseaux" class="time-display">45</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('ciseaux')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('ciseaux')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exercise-item">
+                            <label><strong>6. Chandelle</strong><br>
+                            <small>Relevé de bassin pour pousser les pieds vers le plafond.</small></label>
+                            <div class="timer-control">
+                                Durée actuelle : <span id="time-chandelle" class="time-display">45</span>s
+                                <div>
+                                    <button type="button" class="btn-remove" onclick="removeTime('chandelle')">-15s</button>
+                                    <button type="button" class="btn-add" onclick="addTime('chandelle')">+15s</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="validation-zone">
+                        <label>Notes de séance (facultatif) :</label>
+                        <textarea id="abdos-notes" placeholder="Ressenti, fatigue, etc."></textarea>
+                        <button type="submit">✅ Valider la séance d'Abdos</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="running" class="tab-content">
+                <h2>🏃 Course à Pied - Importation</h2>
+                <p class="subtitle">Importez votre fichier TCX pour enregistrer vos statistiques de course (Garmin/Strava).</p>
+
+                <div class="exercise-block">
+                    <h3>1. Importer un Fichier TCX</h3>
+                    <div class="input-row" style="flex-direction: column; align-items: flex-start; gap: 10px; padding: 15px;">
+                        <label for="tcxFileInput" style="width: 100%;">Sélectionner un fichier TCX (.tcx) :</label>
+                        <input type="file" id="tcxFileInput" accept=".tcx" onchange="loadTcxFile(event)" style="width: 100%;">
+                        <div id="tcx-stats-display" style="width: 100%; margin-top: 10px; color: var(--color-primary);"></div>
+                        <button type="button" id="tcxSaveButton" style="width: 100%; display: none;">💾 Enregistrer Données TCX</button>
+                    </div>
+                </div>
+                
+                <div class="exercise-block">
+                    <h3>2. Saisir manuellement (Optionnel)</h3>
+                    <form id="form-running-manual">
+                           <div class="exercise-group">
+                            <label for="manual-distance">Distance (km) :</label>
+                            <input type="number" id="manual-distance" placeholder="Ex: 5.2" min="0" step="0.1">
+                        </div>
+                        <div class="exercise-group">
+                            <label for="manual-time">Durée (minutes) :</label>
+                            <input type="number" id="manual-time" placeholder="Ex: 35" min="0">
+                        </div>
+                        <button type="submit">✍️ Enregistrer la course manuellement</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="piscine" class="tab-content">
+                <h2>🏊 Natation - Saisie Manuelle</h2>
+                <p class="subtitle">Enregistrez votre séance de natation (distance et temps).</p>
+
+                <form id="form-piscine">
+                    <div class="exercise-block">
+                        <div class="exercise-group">
+                            <label for="piscine-distance">Distance (mètres) :</label>
+                            <input type="number" id="piscine-distance" placeholder="Ex: 1500" min="0" required>
+                        </div>
+                        <div class="exercise-group">
+                            <label for="piscine-time">Durée (minutes) :</label>
+                            <input type="number" id="piscine-time" placeholder="Ex: 45" min="0" required>
+                        </div>
+                        <button type="submit">✍️ Enregistrer la séance de Piscine</button>
+                    </div>
+                </form>
+            </div>
+            
+        </div> <div class="right-panel" id="stats-panel">
+            <h2>📈 Mon Évolution</h2>
+            
+            <div class="chart-container">
+                <h3>💪 Progression Pompes & Balais</h3>
+                <canvas id="pompesChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <h3>🏋️ Progression Force Natation</h3>
+                <canvas id="forceNatationChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <h3>🏃 Progression Course (Durée/Distance)</h3>
+                <canvas id="tcxChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>🧘 Souplesse Ischio-Jambiers</h3>
+                <canvas id="ischioChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>⏱️ Évolution des temps de maintien Étirements</h3>
+                <p style="font-size:0.8rem; color:#aaa;">(Évolution de la durée en secondes)</p>
+                <canvas id="durationChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>⏱️ Évolution des temps de maintien Abdos</h3>
+                <p style="font-size:0.8rem; color:#aaa;">(Progression de la durée en secondes pour la routine Abs)</p>
+                <canvas id="abdosChart"></canvas>
+            </div>
+            
+            <h3 style="margin-top: 30px;">Historique Récent</h3>
+            <ul id="history-list"></ul>
+            <button onclick="clearData()" style="background-color: #ff4d4d; margin-top:20px;">🗑️ Tout effacer</button>
+        </div>
+    </div> 
+    
+    <script src="js/script.js"></script>
+</body>
+</html>
